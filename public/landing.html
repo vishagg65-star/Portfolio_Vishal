@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vishal Aggarwal | Celestial Terminal</title>
+  <meta name="description"
+    content="Welcome to Vishal Aggarwal's cosmic portfolio — a gateway to innovation, design, and engineering excellence.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700&family=Space+Grotesk:wght@500;600&display=swap"
+    rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0118;
+      --purple-deep: #1a0535;
+      --purple-mid: #2d0a5e;
+      --cyan: #00ffff;
+      --pink: #ff51fa;
+      --pink-glow: rgba(255, 81, 250, 0.6);
+      --cyan-glow: rgba(0, 255, 255, 0.5);
+      --font-heading: 'Outfit', sans-serif;
+      --font-sub: 'Space Grotesk', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: var(--font-body);
+      color: #fff;
+      cursor: default;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ======================== CANVAS LAYERS ======================== */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* ======================== NEBULA ORBS ======================== */
+    .nebula {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: screen;
+    }
+
+    .neb-1 {
+      width: 700px;
+      height: 700px;
+      top: -200px;
+      left: -200px;
+      background: radial-gradient(circle, rgba(100, 0, 200, 0.25) 0%, transparent 70%);
+      filter: blur(60px);
+      animation: nebPulse 8s ease-in-out infinite alternate;
+    }
+
+    .neb-2 {
+      width: 500px;
+      height: 500px;
+      top: 5%;
+      right: -100px;
+      background: radial-gradient(circle, rgba(0, 180, 255, 0.12) 0%, transparent 70%);
+      filter: blur(50px);
+      animation: nebPulse 10s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes nebPulse {
+      0% {
+        opacity: 0.6;
+        transform: scale(1);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1.15);
+      }
+    }
+
+    /* ======================== METEORS ======================== */
+    .meteor {
+      position: fixed;
+      height: 2px;
+      border-radius: 999px;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .meteor::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -1px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .m1 {
+      width: 200px;
+      top: 6%;
+      left: 80%;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), transparent);
+      animation: meteorShoot 5s linear infinite;
+      animation-delay: 0s;
+    }
+
+    .m2 {
+      width: 300px;
+      top: 15%;
+      left: 90%;
+      background: linear-gradient(90deg, rgba(0, 255, 255, 0.7), transparent);
+      animation: meteorShoot 6s linear infinite;
+      animation-delay: 2s;
+    }
+
+    @keyframes meteorShoot {
+      0% {
+        transform: rotate(-35deg) translateX(0);
+        opacity: 0;
+      }
+
+      3% {
+        opacity: 1;
+      }
+
+      30% {
+        opacity: 0;
+      }
+
+      100% {
+        transform: rotate(-35deg) translateX(-2200px);
+        opacity: 0;
+      }
+    }
+
+    /* ======================== PLANET (EARTH) ======================== */
+    .planet-container {
+      position: fixed;
+      bottom: -45vh;
+      /* Sinks most of the circle to create a horizon arc near center */
+      left: 50%;
+      transform: translateX(-50%) translateZ(0);
+      width: 100vh;
+      height: 100vh;
+      z-index: 4;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .planet-glow-outer {
+      position: absolute;
+      inset: -30px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 180, 255, 0.25) 0%, transparent 70%);
+      animation: planetPulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes planetPulse {
+      0% {
+        opacity: 0.5;
+        transform: scale(1);
+      }
+
+      100% {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+    }
+
+    .planet-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 -10px 60px rgba(0, 255, 255, 0.4));
+    }
+
+    /* ======================== ASTRONAUT ======================== */
+    .astronaut-container {
+      position: fixed;
+      z-index: 6;
+      bottom: 28vh;
+      /* Nudged down significantly to anchor onto the Earth's arc */
+      left: 50%;
+      transform: translateX(-50%) translateZ(0);
+      width: clamp(160px, 22vh, 280px);
+      animation: astroSitFloat 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes astroSitFloat {
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0) rotate(-1.5deg);
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(-10px) rotate(1.5deg);
+      }
+    }
+
+    .astro-img {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 20px 45px rgba(0, 255, 255, 0.5));
+    }
+
+    /* ======================== HERO TEXT ======================== */
+    .hero {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 12vh;
+      /* Pushed higher to move text away from the center-horizon */
+      pointer-events: none;
+    }
+
+    .header-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: clamp(300px, 90vw, 1200px);
+    }
+
+    .message-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 20px;
+    }
+
+    .message-row.top {
+      justify-content: flex-end;
+    }
+
+    .message-row.bottom {
+      justify-content: flex-start;
+    }
+
+    .msg-text {
+      font-family: var(--font-sub);
+      font-size: clamp(0.55rem, 1vw, 0.75rem);
+      letter-spacing: 0.5em;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .msg-line {
+      flex-grow: 1;
+      height: 1.5px;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.05));
+    }
+
+    .message-row.top .msg-line {
+      background: linear-gradient(to left, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.05));
+    }
+
+    .headline {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 4.2vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(160, 102, 255, 0.9);
+      filter: drop-shadow(0 0 15px rgba(160, 102, 255, 0.4));
+      margin: 10px 0;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 1s ease 0.5s forwards, textGlowLoop 5s infinite 2s;
+    }
+
+    @keyframes textGlowLoop {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 8px rgba(160, 102, 255, 0.5));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 25px rgba(160, 102, 255, 0.8));
+      }
+    }
+
+    .subheadline {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-top: 3vh;
+      /* Controlled gap */
+      opacity: 0;
+      animation: fadeIn 1.2s ease 1.5s forwards;
+      filter: drop-shadow(0 0 10px rgba(160, 102, 255, 0.3));
+    }
+
+    /* ======================== CTA BUTTON ======================== */
+    .cta-zone {
+      position: fixed;
+      z-index: 15;
+      bottom: 18vh;
+      /* Positioned clearly on the upper surface of the earth */
+      left: 50%;
+      transform: translateX(-50%) translateZ(0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      animation: fadeInCenter 1s ease 2.2s forwards;
+      pointer-events: auto;
+    }
+
+    .click-frame {
+      position: relative;
+      padding: 18px 45px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .bracket {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border: 3.5px solid rgba(255, 255, 255, 0.9);
+      transition: all 0.3s;
+    }
+
+    .b-tl {
+      top: 0;
+      left: 0;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .b-br {
+      bottom: 0;
+      right: 0;
+      border-left: none;
+      border-top: none;
+    }
+
+    .click-text {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      text-align: center;
+      letter-spacing: 0.1em;
+    }
+
+    .click-text span {
+      display: block;
+    }
+
+    .click-frame:hover {
+      transform: scale(1.15);
+    }
+
+    .click-frame:hover .bracket {
+      border-color: var(--cyan);
+      width: 35px;
+      height: 35px;
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .click-frame:hover .click-text {
+      color: var(--cyan);
+      text-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInCenter {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    /* ======================== SIDEBAR ======================== */
+    .sidebar {
+      position: fixed;
+      left: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 20;
+      opacity: 0;
+      animation: fadeInSidebar 1s ease 2.5s forwards;
+    }
+
+    @keyframes fadeInSidebar {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .s-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.5rem;
+      text-decoration: none;
+      transition: all 0.4s;
+    }
+
+    .s-icon:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0, 255, 255, 0.1);
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
+      transform: scale(1.2) rotate(8deg);
+    }
+
+    /* ======================== VEILS ======================== */
+    #entry-veil {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 1.5s ease;
+    }
+
+    body.loaded #entry-veil {
+      opacity: 0;
+    }
+
+    #exit-veil {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 80%, var(--cyan), var(--bg));
+      transition: opacity 0.8s ease;
+    }
+
+    /* ======================== RESPONSIVE ======================== */
+    @media (max-width: 768px) {
+      .planet-container {
+        width: 100vh;
+        height: 100vh;
+        bottom: -60vh; /* Sinks more for a nice arc on narrow screens */
+      }
+
+      .astronaut-container {
+        bottom: 12vh; /* Sits on the crest of the -60 + 100 = 40vh horizon */
+        width: 130px;
+      }
+
+      .headline {
+        font-size: 1.8rem;
+        -webkit-text-stroke: 1px rgba(160, 102, 255, 0.9);
+      }
+
+      .subheadline {
+        font-size: 1.5rem;
+        margin-top: 20px;
+      }
+
+      .msg-line {
+        display: none;
+      }
+
+      .message-row {
+        justify-content: center !important;
+      }
+
+      .sidebar {
+        left: 15px;
+      }
+
+      .cta-zone {
+        bottom: 48vh; /* Moved above the astronaut and planet crest on mobile */
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="entry-veil"></div>
+  <div id="exit-veil"></div>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="nebula neb-1"></div>
+  <div class="nebula neb-2"></div>
+
+  <div class="meteor m1"></div>
+  <div class="meteor m2"></div>
+
+  <div class="planet-container">
+    <div class="planet-glow-outer"></div>
+    <img src="assets/img/projects/earth.png" alt="Earth" class="planet-img">
+  </div>
+
+  <div class="astronaut-container">
+    <img src="assets/img/projects/astronaut.png" alt="Astronaut" class="astro-img">
+  </div>
+
+  <div class="hero">
+    <div class="header-block">
+      <div class="message-row top">
+        <div class="msg-line"></div>
+        <span class="msg-text">A Message From Earth</span>
+      </div>
+
+      <h1 class="headline">HELLO FELLOW GALAXY MEMBER</h1>
+
+
+      <h2 class="subheadline">I AM VISHAL</h2>
+    </div>
+  </div>
+
+  <div class="cta-zone">
+    <a class="click-frame" id="open-btn" href="index.html">
+      <div class="bracket b-tl"></div>
+      <div class="bracket b-br"></div>
+      <div class="click-text">
+        <span>CLICK</span>
+        <span>TO OPEN</span>
+      </div>
+    </a>
+  </div>
+
+  <nav class="sidebar">
+    <a href="https://github.com/Vishal-Aggarwal0305/" target="_blank" class="s-icon"><i class='bx bxl-github'></i></a>
+    <a href="https://www.linkedin.com/in/vishalaggarwal0305/" target="_blank" class="s-icon"><i
+        class='bx bxl-linkedin'></i></a>
+    <a href="mailto:vishalaggarwal0305@gmail.com" class="s-icon"><i class='bx bx-envelope'></i></a>
+  </nav>
+
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    let stars = [];
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      initStars();
+    }
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < 250; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.5 + 0.5,
+          opacity: Math.random(),
+          speed: Math.random() * 0.01 + 0.005
+        });
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+      stars.forEach(s => {
+        s.opacity += s.speed;
+        if (s.opacity > 1 || s.opacity < 0) s.speed *= -1;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    animate();
+
+    window.addEventListener('load', () => setTimeout(() => document.body.classList.add('loaded'), 100));
+
+    function transition(e) {
+      if (e) e.preventDefault();
+      document.getElementById('exit-veil').style.opacity = '1';
+      setTimeout(() => window.location.href = 'index.html', 800);
+    }
+
+    document.getElementById('open-btn').addEventListener('click', transition);
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') transition(); });
+  </script>
+</body>
+
+</html>

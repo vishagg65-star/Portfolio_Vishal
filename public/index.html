@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Vishal - Minimalist Indigo Portfolio</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Great+Vibes&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS & Tailwind -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            deepIndigo: '#0B0914',
+            lightIndigo: '#1A1531',
+            neonPurple: '#7B3BFF',
+            brightPurple: '#A066FF'
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+            cursive: ['Great Vibes', 'cursive']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #0B0914;
+      color: #F8F9FA;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      width: 100vw;
+      max-width: 100%;
+      position: relative;
+    }
+
+    html {
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    .glass-box {
+      background: rgba(26, 21, 49, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(123, 59, 255, 0.2);
+    }
+
+    .border-hover {
+      transition: all 0.3s ease;
+    }
+
+    .border-hover:hover {
+      border-color: rgba(160, 102, 255, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px -10px rgba(123, 59, 255, 0.3);
+    }
+
+    /* Oval text highlight effect */
+    .oval-highlight {
+      position: relative;
+      display: inline-block;
+      color: #A066FF;
+    }
+
+    .oval-highlight::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: -15px;
+      right: -15px;
+      bottom: -5px;
+      border: 2px solid #A066FF;
+      border-radius: 50%;
+      transform: rotate(-3deg);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    /* Blinking Cursor */
+    .typed-cursor {
+      font-weight: 300;
+      color: #A066FF;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* Modal Styles */
+    #project-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 9, 20, 0.95);
+      backdrop-filter: blur(15px);
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    #project-modal.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      background: rgba(123, 59, 255, 0.1);
+      border: 1px solid rgba(123, 59, 255, 0.3);
+      color: #fff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10000;
+      transition: all 0.3s;
+      font-size: 24px;
+    }
+
+    .modal-close:hover {
+      background: rgba(123, 59, 255, 0.3);
+      transform: rotate(90deg);
+    }
+
+    /* Tech Tree Styling (Exact Match to Screenshot) */
+    .tree-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 550px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+      padding: 60px 0;
+    }
+
+    .tree-container {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      height: 450px;
+      margin-top: 20px;
+      z-index: 20;
+      transform: scale(0.75);
+      transform-origin: top center;
+    }
+
+    .skill-badge {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: #1A1531;
+      border: 1px solid rgba(123, 59, 255, 0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      z-index: 30;
+      transition: all 0.3s ease;
+    }
+
+    .skill-badge:hover {
+      transform: translate(-50%, -50%) scale(1.15);
+      border-color: #A066FF;
+      box-shadow: 0 0 20px rgba(123, 59, 255, 0.4);
+    }
+
+    .central-glow {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      background: #140A2C;
+      border: 3px solid #A066FF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 75px;
+      color: #fff;
+      box-shadow: 0 0 80px rgba(123, 59, 255, 0.8), inset 0 0 30px rgba(123, 59, 255, 0.5);
+      z-index: 40;
+      font-family: 'Great Vibes', cursive;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Flat Background Halos */
+    .bg-halo {
+      position: absolute;
+      border: 1px solid rgba(123, 59, 255, 0.15);
+      border-radius: 50%;
+      top: 400px;
+      /* Aligned with central glow */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .halo-1 {
+      width: 500px;
+      height: 140px;
+    }
+
+    .halo-2 {
+      width: 750px;
+      height: 210px;
+    }
+
+    .halo-3 {
+      width: 1050px;
+      height: 300px;
+    }
+
+    .halo-dot {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      background: #0B0914;
+      border: 1px solid rgba(123, 59, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7B3BFF;
+      font-size: 16px;
+      margin-top: -16px;
+      margin-left: -16px;
+    }
+
+    /* ======================== CELESTIAL BACKGROUND ======================== */
+    #celeb-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -5;
+      pointer-events: none;
+    }
+
+    .nebula {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -4;
+      mix-blend-mode: screen;
+    }
+
+    .neb-1 {
+      width: 700px;
+      height: 700px;
+      top: -200px;
+      left: -200px;
+      background: radial-gradient(circle, rgba(160, 102, 255, 0.15) 0%, transparent 70%);
+      filter: blur(80px);
+      animation: nebPulse 12s ease-in-out infinite alternate;
+    }
+
+    .neb-2 {
+      width: 500px;
+      height: 500px;
+      bottom: 5%;
+      right: -100px;
+      background: radial-gradient(circle, rgba(123, 59, 255, 0.1) 0%, transparent 70%);
+      filter: blur(60px);
+      animation: nebPulse 10s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes nebPulse {
+      0% {
+        opacity: 0.5;
+        transform: scale(1);
+      }
+
+      100% {
+        opacity: 0.8;
+        transform: scale(1.1);
+      }
+    }
+
+    .meteor {
+      position: fixed;
+      height: 2px;
+      border-radius: 999px;
+      z-index: -3;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .meteor::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -1px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .m1 {
+      width: 200px;
+      top: 10%;
+      left: 80%;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.4), transparent);
+      animation: meteorShoot 7s linear infinite;
+      animation-delay: 1s;
+    }
+
+    .m2 {
+      width: 300px;
+      top: 40%;
+      left: 95%;
+      background: linear-gradient(90deg, rgba(160, 102, 255, 0.3), transparent);
+      animation: meteorShoot 9s linear infinite;
+      animation-delay: 5s;
+    }
+
+    @keyframes meteorShoot {
+      0% {
+        transform: rotate(-35deg) translateX(0);
+        opacity: 0;
+      }
+
+      3% {
+        opacity: 1;
+      }
+
+      30% {
+        opacity: 0;
+      }
+
+      100% {
+        transform: rotate(-35deg) translateX(-2000px);
+        opacity: 0;
+      }
+    }
+  </style>
+
+</head>
+
+<body class="antialiased">
+
+  <!-- Celestial Background Layers -->
+  <canvas id="celeb-canvas"></canvas>
+  <div class="nebula neb-1"></div>
+  <div class="nebula neb-2"></div>
+  <div class="meteor m1"></div>
+  <div class="meteor m2"></div>
+
+  <!-- Minimalist Navbar -->
+  <nav
+    class="w-full fixed top-0 z-50 transition-all duration-300 bg-deepIndigo/80 backdrop-blur-md border-b border-lightIndigo">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-6 flex justify-between items-center">
+      <!-- Logo -->
+      <a href="#"
+        class="font-cursive text-2xl lg:text-3xl font-normal tracking-wide text-white hover:text-brightPurple transition-colors drop-shadow-md">
+        Vishal Aggarwal
+      </a>
+
+      <!-- Nav Links -->
+      <div class="hidden md:flex gap-8 items-center text-sm font-medium">
+        <a href="#home" class="text-white hover:text-brightPurple transition-colors">Home</a>
+        <a href="#featured" class="text-white hover:text-brightPurple transition-colors">About</a>
+        <a href="#experience" class="text-white hover:text-brightPurple transition-colors">Lab</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="min-h-screen pt-40 pb-16 flex items-center relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 w-full flex flex-col relative z-20 gs-reveal">
+
+      <!-- Main Interactive Row (Avatar + Headline) -->
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 w-full mb-16">
+
+        <!-- Visual Left (Avatar with Floating Identity) -->
+        <div class="w-full lg:w-[45%] flex items-center justify-center relative">
+
+          <!-- Avatar Box -->
+          <div class="w-56 h-56 md:w-80 md:h-80 flex-shrink-0 relative">
+            <div
+              class="w-full h-full bg-gradient-to-t from-neonPurple/40 to-transparent rounded-full absolute bottom-0 blur-2xl">
+            </div>
+            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Vishal&backgroundColor=transparent" alt="Avatar"
+              class="w-full h-full object-contain relative z-10 drop-shadow-2xl opacity-90">
+          </div>
+
+          <!-- Floating Identity Tag (Visible on Desktop, Centered on Mobile) -->
+          <div class="absolute -top-12 lg:top-0 lg:-right-36 flex flex-col items-center lg:items-start group">
+            <div class="flex items-center gap-4">
+              <!-- Curving Arrow (Points to Avatar) -->
+              <div class="hidden lg:block opacity-80 animate-pulse">
+                <svg width="60" height="40" viewBox="0 0 100 60" fill="none" stroke="#A066FF" stroke-width="4"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M90,10 Q50,10 20,50" />
+                  <path d="M10,40 L15,55 L30,50" />
+                </svg>
+              </div>
+              <h3 class="text-base md:text-lg font-bold text-white tracking-tight whitespace-nowrap">
+                Hello! I Am <span class="text-brightPurple">Vishal Aggarwal</span>
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Headline Right -->
+        <div class="w-full lg:w-[55%] text-center lg:text-left">
+          <p class="text-gray-300 text-2xl md:text-3xl font-medium mb-3">A Designer who</p>
+          <h1
+            class="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-6 tracking-tight text-white drop-shadow-lg">
+            Judges a book<br>
+            by its <span class="oval-highlight text-brightPurple px-4">cover...</span>
+          </h1>
+          <p class="text-gray-400 text-sm md:text-base font-medium italic">Because if the cover does not impress you
+            what else can?</p>
+        </div>
+      </div>
+
+      <!-- Professional Identity Row -->
+      <div class="w-full text-center md:text-left">
+        <h2 class="text-4xl md:text-6xl font-bold mb-6 text-white uppercase tracking-tighter">
+          I'm a <span id="typed-text" class="text-brightPurple"></span><span class="typed-cursor">|</span>
+        </h2>
+        <p
+          class="text-gray-300 text-lg md:text-xl font-medium mb-8 flex items-center justify-center md:justify-start gap-4">
+          Currently, I'm a System Engineer at
+          <a href="https://www.tcs.com/" target="_blank"
+            class="inline-flex items-center gap-2 font-semibold text-brightPurple bg-brightPurple/10 border border-brightPurple/20 px-5 py-2 rounded-full hover:bg-brightPurple/20 transition-all">
+            <i class='bx bx-buildings'></i> TCS
+          </a>
+        </p>
+        <p class="text-gray-400 text-base md:text-lg leading-relaxed max-w-3xl font-medium px-4 md:px-0">
+          A self-taught Developer & Designer dedicated to solving social challenges through cutting-edge engineering and
+          immersive design.
+          I build digital experiences that balance user needs with aesthetic excellence—because the first impression is
+          the only impression.
+        </p>
+      </div>
+
+      <div class="mt-12 flex justify-center md:justify-start">
+        <a href="assets/Vishal_Aggarwal_Resume.pdf" download="Vishal_Aggarwal_Resume.pdf"
+          class="group inline-flex items-center gap-4 px-10 py-4 rounded-full bg-white text-black font-bold tracking-tight hover:bg-brightPurple hover:text-white transition-all duration-400 shadow-xl">
+          <i class="bx bx-download text-2xl"></i> DOWNLOAD RESUME
+        </a>
+      </div>
+    </div>
+
+    </div>
+  </section>
+
+  <!-- Skill Section (Exact Layout Match) BEFORE Featured Projects -->
+  <section class="tree-wrapper gs-reveal" id="tech-stack">
+
+    <div class="max-w-4xl mx-auto text-center px-6 relative z-30">
+      <h3 class="text-2xl md:text-3xl font-medium leading-relaxed text-gray-200">
+        I'm currently looking to join a <span class="text-brightPurple font-semibold">cross-functional team</span><br
+          class="hidden md:block">
+        that values improving people's lives through accessible design
+      </h3>
+    </div>
+
+    <!-- Desktop Tree Layout -->
+    <div class="tree-container hidden md:block">
+
+      <!-- SVG Sweeping Lines to Center -->
+      <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-10" viewBox="0 0 900 450">
+        <!-- Top row connections to (450, 400) -->
+        <path d="M 150,50 Q 150,300 450,400" fill="none" class="stroke-brightPurple stroke-[1.5px]" />
+        <path d="M 250,50 Q 250,300 450,400" fill="none" class="stroke-brightPurple stroke-[1.5px]" />
+        <path d="M 350,50 Q 350,300 450,400" fill="none" class="stroke-brightPurple stroke-[1.5px]" />
+        <path d="M 450,50 C 450,200 450,300 450,400" fill="none" class="stroke-brightPurple stroke-[1.5px]" />
+        <path d="M 550,50 Q 550,300 450,400" fill="none" class="stroke-brightPurple stroke-[1.5px]" />
+        <path d="M 650,50 Q 650,300 450,400" fill="none" class="stroke-brightPurple stroke-[1.5px]" />
+        <path d="M 750,50 Q 750,300 450,400" fill="none" class="stroke-brightPurple stroke-[1.5px]" />
+
+        <!-- Bottom row connections to (450, 400) -->
+        <path d="M 200,160 Q 300,320 450,400" fill="none" class="stroke-neonPurple stroke-[1px]" />
+        <path d="M 333,160 Q 380,320 450,400" fill="none" class="stroke-neonPurple stroke-[1px]" />
+        <path d="M 450,160 C 450,250 450,320 450,400" fill="none" class="stroke-neonPurple stroke-[1px]" />
+        <path d="M 566,160 Q 520,320 450,400" fill="none" class="stroke-neonPurple stroke-[1px]" />
+        <path d="M 700,160 Q 600,320 450,400" fill="none" class="stroke-neonPurple stroke-[1px]" />
+      </svg>
+
+      <!-- Background Flat Halo Rings -->
+      <div class="bg-halo halo-1">
+        <div class="halo-dot" style="left: 0; top: 50%;"><i class='bx bxl-git'></i></div>
+        <div class="halo-dot" style="right: 0; top: 50%;"><i class='bx bxl-npm'></i></div>
+      </div>
+      <div class="bg-halo halo-2">
+        <div class="halo-dot" style="left: 10%; top: 20%;"><i class='bx bxl-python'></i></div>
+        <div class="halo-dot" style="right: 15%; top: 85%;"><i class='bx bxl-javascript'></i></div>
+      </div>
+      <div class="bg-halo halo-3">
+        <div class="halo-dot" style="left: 15%; top: 85%;"><i class='bx bxl-linkedin'></i></div>
+        <div class="halo-dot" style="right: 15%; top: 15%;"><i class='bx bx-code-alt'></i></div>
+      </div>
+
+      <!-- Central Highlight Logo -->
+      <div class="central-glow" style="left: 450px; top: 400px;">V</div>
+
+      <!-- Top Row Icons (Web & UI) -->
+      <div class="skill-badge" style="left: 150px; top: 50px;" title="Figma"><i class='bx bxl-figma text-[#F24E1E]'></i>
+      </div>
+      <div class="skill-badge" style="left: 250px; top: 50px;" title="React"><i class='bx bxl-react text-[#61DAFB]'></i>
+      </div>
+      <div class="skill-badge" style="left: 350px; top: 50px;" title="C/C++"><i
+          class='bx bxl-c-plus-plus text-[#00599C]'></i></div>
+      <div class="skill-badge" style="left: 450px; top: 50px;" title="Node.js"><i
+          class='bx bxl-nodejs text-[#339933]'></i></div>
+      <div class="skill-badge" style="left: 550px; top: 50px;" title="Redux"><i class='bx bxl-redux text-[#764ABC]'></i>
+      </div>
+      <div class="skill-badge" style="left: 650px; top: 50px;" title="JavaScript"><i
+          class='bx bxl-javascript text-[#F7DF1E]'></i></div>
+      <div class="skill-badge" style="left: 750px; top: 50px;" title="CSS3"><i class='bx bxl-css3 text-[#1572B6]'></i>
+      </div>
+
+      <!-- Bottom Row Icons (AI, Backend & Databases) -->
+      <div class="skill-badge" style="left: 200px; top: 160px;" title="Python"><i
+          class='bx bxl-python text-[#3776AB]'></i></div>
+      <div class="skill-badge" style="left: 333px; top: 160px;" title="Tailwind"><i
+          class='bx bxl-tailwind-css text-[#06B6D4]'></i></div>
+      <div class="skill-badge" style="left: 450px; top: 160px;" title="AI Applications"><i
+          class='bx bx-brain text-[#A066FF]'></i></div>
+      <div class="skill-badge" style="left: 566px; top: 160px;" title="Flask / Backend"><i
+          class='bx bxl-flask text-white'></i></div>
+      <div class="skill-badge" style="left: 700px; top: 160px;" title="MongoDB"><i
+          class='bx bxl-mongodb text-[#47A248]'></i></div>
+
+    </div>
+
+    <!-- Mobile Variant Grids -->
+    <div class="md:hidden flex flex-wrap justify-center gap-4 mt-12 px-4 relative z-20">
+      <div
+        class="w-12 h-12 rounded-full bg-lightIndigo border border-brightPurple/40 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(123,59,255,0.3)]">
+        <i class='bx bxl-python text-[#3776AB]'></i>
+      </div>
+      <div
+        class="w-12 h-12 rounded-full bg-lightIndigo border border-brightPurple/40 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(123,59,255,0.3)]">
+        <i class='bx bxl-react text-[#61DAFB]'></i>
+      </div>
+      <div
+        class="w-12 h-12 rounded-full bg-lightIndigo border border-brightPurple/40 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(123,59,255,0.3)]">
+        <i class='bx bx-brain text-[#A066FF]'></i>
+      </div>
+      <div
+        class="w-12 h-12 rounded-full bg-lightIndigo border border-brightPurple/40 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(123,59,255,0.3)]">
+        <i class='bx bxl-html5 text-[#E34F26]'></i>
+      </div>
+      <div
+        class="w-12 h-12 rounded-full bg-lightIndigo border border-brightPurple/40 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(123,59,255,0.3)]">
+        <i class='bx bxl-nodejs text-[#339933]'></i>
+      </div>
+      <div
+        class="w-12 h-12 rounded-full bg-lightIndigo border border-brightPurple/40 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(123,59,255,0.3)]">
+        <i class='bx bxl-css3 text-[#1572B6]'></i>
+      </div>
+      <div
+        class="w-12 h-12 rounded-full bg-lightIndigo border border-brightPurple/40 flex items-center justify-center text-xl shadow-[0_0_15px_rgba(123,59,255,0.3)] font-cursive text-gray-200">
+        V</div>
+    </div>
+
+  </section>
+
+  <!-- Featured Projects (Top 3 Overlapping Layout) -->
+  <section id="featured" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="text-center md:text-left mb-16 gs-reveal">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-2">Featured Projects</h2>
+      </div>
+
+      <div class="space-y-32">
+
+        <!-- Featured Project 1 (Resume Evaluator) -->
+        <div class="flex flex-col md:flex-row items-center relative gs-reveal group">
+          <!-- Text Box overlapping right -->
+          <div
+            class="w-full md:w-[45%] glass-box p-6 md:p-12 rounded-2xl relative z-20 md:-mr-16 order-2 md:order-1 mt-[-20px] md:mt-0 shadow-2xl">
+            <p class="text-brightPurple text-sm font-semibold tracking-wider uppercase mb-2">Featured Project</p>
+            <h3 class="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">Resume Evaluator – AI Resume
+              Analysis
+            </h3>
+            <p class="text-gray-300 text-base leading-relaxed mb-8">
+              A visually stunning AI-powered application designed to evaluate resumes at absolute precision using
+              specialized NVIDIA Llama-3.1-405b model in an immersive, deep-space user interface.
+            </p>
+            <button onclick="openModal('projects/resumeeval.html')"
+              class="inline-flex items-center gap-2 text-white hover:text-brightPurple transition-colors uppercase text-sm font-semibold tracking-wide">
+              <i class="bx bx-world text-xl"></i> View Details
+            </button>
+          </div>
+          <!-- Image Box right -->
+          <div
+            class="w-full md:w-[70%] h-[400px] md:h-[500px] rounded-2xl overflow-hidden relative border border-lightIndigo order-1 md:order-2 bg-[#08070D]">
+            <img src="assets/img/projects/resume_eval.png" alt="Resume Evaluator AI UI"
+              class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-tr from-neonPurple/20 to-transparent pointer-events-none"></div>
+          </div>
+        </div>
+
+        <!-- Featured Project 2 (Conjecture AI) -->
+        <div class="flex flex-col md:flex-row items-center relative gs-reveal group">
+          <!-- Image Box left -->
+          <div
+            class="w-full md:w-[70%] h-[400px] md:h-[500px] rounded-2xl overflow-hidden relative border border-lightIndigo bg-[#08070D]">
+            <img src="assets/img/projects/conjecture_ai.png" alt="Conjecture AI Dashboard"
+              class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-br from-brightPurple/20 to-transparent pointer-events-none">
+            </div>
+          </div>
+          <!-- Text Box overlapping left -->
+          <div
+            class="w-full md:w-[45%] glass-box p-6 md:p-12 rounded-2xl relative z-20 md:-ml-16 mt-[-20px] md:mt-0 shadow-2xl">
+            <p class="text-brightPurple text-sm font-semibold tracking-wider uppercase mb-2">Featured Project</p>
+            <h3 class="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">Conjecture AI – Automated
+              Hypothesis</h3>
+            <p class="text-gray-300 text-base leading-relaxed mb-8">
+              A comprehensive data analytics platform leveraging the Groq LLM API. It automates hypothesis generation
+              and visualizes insights using a dynamic Chart.js dashboard.
+            </p>
+            <button onclick="openModal('projects/conjecture.html')"
+              class="inline-flex items-center gap-2 text-white hover:text-brightPurple transition-colors uppercase text-sm font-semibold tracking-wide">
+              <i class="bx bx-world text-xl"></i> View Details
+            </button>
+          </div>
+        </div>
+
+        <!-- Featured Project 3 (Sentiment Analysis) -->
+        <div class="flex flex-col md:flex-row items-center relative gs-reveal group">
+          <!-- Text Box overlapping right -->
+          <div
+            class="w-full md:w-[45%] glass-box p-6 md:p-12 rounded-2xl relative z-20 md:-mr-16 order-2 md:order-1 mt-[-20px] md:mt-0 shadow-2xl">
+            <p class="text-brightPurple text-sm font-semibold tracking-wider uppercase mb-2">Featured Project</p>
+            <h3 class="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">Sentiment Analysis – Emotion
+              Tracker</h3>
+            <p class="text-gray-300 text-base leading-relaxed mb-8">
+              Advanced machine learning NLP web application built to analyze text inputs and detect emotional
+              subtleties. Features real-time inference and rigorous model validation.
+            </p>
+            <button onclick="openModal('projects/sentiment.html')"
+              class="inline-flex items-center gap-2 text-white hover:text-brightPurple transition-colors uppercase text-sm font-semibold tracking-wide">
+              <i class="bx bx-world text-xl"></i> View Details
+            </button>
+          </div>
+          <!-- Image Box right -->
+          <div
+            class="w-full md:w-[70%] h-[400px] md:h-[500px] rounded-2xl overflow-hidden relative border border-lightIndigo order-1 md:order-2 bg-[#08070D]">
+            <img src="assets/img/projects/sentiment_ai.png" alt="Sentiment Analysis AI"
+              class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-tr from-neonPurple/20 to-transparent pointer-events-none"></div>
+          </div>
+        </div>
+
+        <!-- Featured Project 4 (Aura Image Generator) -->
+        <div class="flex flex-col md:flex-row items-center relative gs-reveal group">
+          <!-- Image Box left -->
+          <div
+            class="w-full md:w-[70%] h-[400px] md:h-[500px] rounded-2xl overflow-hidden relative border border-lightIndigo bg-[#08070D]">
+            <img src="assets/img/projects/auraai.png" alt="Aura Image Generator UI"
+              class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-br from-brightPurple/20 to-transparent pointer-events-none">
+            </div>
+          </div>
+          <!-- Text Box overlapping left -->
+          <div
+            class="w-full md:w-[45%] glass-box p-6 md:p-12 rounded-2xl relative z-20 md:-ml-16 mt-[-20px] md:mt-0 shadow-2xl">
+            <p class="text-brightPurple text-sm font-semibold tracking-wider uppercase mb-2">Featured Project</p>
+            <h3 class="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">Aura AI – Elite Image Generator
+            </h3>
+            <p class="text-gray-300 text-base leading-relaxed mb-8">
+              High-performance Single Page Application utilizing elite FLUX AI model family. Create high-fidelity,
+              stunning visualizations and digital photography at sub-second speeds.
+            </p>
+            <button onclick="openModal('projects/auraimage.html')"
+              class="inline-flex items-center gap-2 text-white hover:text-brightPurple transition-colors uppercase text-sm font-semibold tracking-wide">
+              <i class="bx bx-world text-xl"></i> View Details
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Work Experience / Additional Projects (2 Column Grid) -->
+  <section id="experience" class="py-24 relative bg-lightIndigo/30">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="text-center mb-16 gs-reveal">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Work Experience & Labs</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Experience Card 2 -->
+        <div
+          class="glass-box border-hover rounded-2xl p-8 flex items-start gap-6 relative overflow-hidden group gs-reveal">
+          <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-neonPurple to-transparent opacity-50">
+          </div>
+          <div
+            class="w-16 h-16 rounded-xl bg-deepIndigo border border-lightIndigo flex items-center justify-center flex-shrink-0 group-hover:border-neonPurple transition-colors">
+            <i class="bx bx-mask text-3xl text-brightPurple group-hover:scale-110 transition-transform"></i>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold text-white mb-2">Covid Mask Detection</h4>
+            <p class="text-gray-400 text-sm mb-4 leading-relaxed">Deep learning computer vision model identifying and
+              alerting faces lacking proper protective masks.</p>
+            <button onclick="openModal('projects/covidmask.html')"
+              class="text-xs uppercase tracking-wider font-semibold text-brightPurple hover:text-white transition-colors">Learn
+              More &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Experience Card 3 -->
+        <div
+          class="glass-box border-hover rounded-2xl p-8 flex items-start gap-6 relative overflow-hidden group gs-reveal">
+          <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-neonPurple to-transparent opacity-50">
+          </div>
+          <div
+            class="w-16 h-16 rounded-xl bg-deepIndigo border border-lightIndigo flex items-center justify-center flex-shrink-0 group-hover:border-neonPurple transition-colors">
+            <i class="bx bx-microphone text-3xl text-brightPurple group-hover:scale-110 transition-transform"></i>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold text-white mb-2">JARVIS AI Assistant</h4>
+            <p class="text-gray-400 text-sm mb-4 leading-relaxed">Artificial Intelligence Voice Assistant tailored for
+              desktop workflow automation.</p>
+            <button onclick="openModal('projects/voiceAssistant.html')"
+              class="text-xs uppercase tracking-wider font-semibold text-brightPurple hover:text-white transition-colors">Learn
+              More &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Experience Card 4 -->
+        <div
+          class="glass-box border-hover rounded-2xl p-8 flex items-start gap-6 relative overflow-hidden group gs-reveal">
+          <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-neonPurple to-transparent opacity-50">
+          </div>
+          <div
+            class="w-16 h-16 rounded-xl bg-deepIndigo border border-lightIndigo flex items-center justify-center flex-shrink-0 group-hover:border-neonPurple transition-colors">
+            <i class="bx bx-news text-3xl text-brightPurple group-hover:scale-110 transition-transform"></i>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold text-white mb-2">News Classification</h4>
+            <p class="text-gray-400 text-sm mb-4 leading-relaxed">NLTK-powered fake news detection engine identifying
+              credibility issues in online texts.</p>
+            <button onclick="openModal('projects/newsClassification.html')"
+              class="text-xs uppercase tracking-wider font-semibold text-brightPurple hover:text-white transition-colors">Learn
+              More &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Experience Card 5 -->
+        <div
+          class="glass-box border-hover rounded-2xl p-8 flex items-start gap-6 relative overflow-hidden group gs-reveal">
+          <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-neonPurple to-transparent opacity-50">
+          </div>
+          <div
+            class="w-16 h-16 rounded-xl bg-deepIndigo border border-lightIndigo flex items-center justify-center flex-shrink-0 group-hover:border-neonPurple transition-colors">
+            <i class="bx bx-plus-medical text-3xl text-brightPurple group-hover:scale-110 transition-transform"></i>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold text-white mb-2">Doctor Appointment App</h4>
+            <p class="text-gray-400 text-sm mb-4 leading-relaxed">A clean and responsive web-based UI for discovering
+              clinics and booking medical appointments.</p>
+            <button onclick="openModal('projects/bookdocAppointment.html')"
+              class="text-xs uppercase tracking-wider font-semibold text-brightPurple hover:text-white transition-colors">Learn
+              More &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Experience Card 6 -->
+        <div
+          class="glass-box border-hover rounded-2xl p-8 flex items-start gap-6 relative overflow-hidden group gs-reveal">
+          <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-neonPurple to-transparent opacity-50">
+          </div>
+          <div
+            class="w-16 h-16 rounded-xl bg-deepIndigo border border-lightIndigo flex items-center justify-center flex-shrink-0 group-hover:border-neonPurple transition-colors">
+            <i class="bx bx-camera text-3xl text-brightPurple group-hover:scale-110 transition-transform"></i>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold text-white mb-2">vGraph Photography</h4>
+            <p class="text-gray-400 text-sm mb-4 leading-relaxed">Fast, stunning structural portfolio engineered
+              specifically to host highly curated photography arrays.</p>
+            <button onclick="openModal('projects/vGraphPhoto.html')"
+              class="text-xs uppercase tracking-wider font-semibold text-brightPurple hover:text-white transition-colors">Learn
+              More &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Experience Card 7 -->
+        <div
+          class="glass-box border-hover rounded-2xl p-8 flex items-start gap-6 relative overflow-hidden group gs-reveal">
+          <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-neonPurple to-transparent opacity-50">
+          </div>
+          <div
+            class="w-16 h-16 rounded-xl bg-deepIndigo border border-lightIndigo flex items-center justify-center flex-shrink-0 group-hover:border-neonPurple transition-colors">
+            <i class="bx bx-dumbbell text-3xl text-brightPurple group-hover:scale-110 transition-transform"></i>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold text-white mb-2">Gym Website System</h4>
+            <p class="text-gray-400 text-sm mb-4 leading-relaxed">Fully responsive web platform for fitness businesses
+              to capture, manage, and engage leads effectively.</p>
+            <button onclick="openModal('projects/GymWeb.html')"
+              class="text-xs uppercase tracking-wider font-semibold text-brightPurple hover:text-white transition-colors">Learn
+              More &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Experience Card 8 -->
+        <div
+          class="glass-box border-hover rounded-2xl p-8 flex items-start gap-6 relative overflow-hidden group gs-reveal">
+          <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-neonPurple to-transparent opacity-50">
+          </div>
+          <div
+            class="w-16 h-16 rounded-xl bg-deepIndigo border border-lightIndigo flex items-center justify-center flex-shrink-0 group-hover:border-neonPurple transition-colors">
+            <i class="bx bx-cart text-3xl text-brightPurple group-hover:scale-110 transition-transform"></i>
+          </div>
+          <div>
+            <h4 class="text-xl font-bold text-white mb-2">VishKart E-commerce</h4>
+            <p class="text-gray-400 text-sm mb-4 leading-relaxed">Cross-platform Android e-commerce application built
+              with Flutter, featuring real-time product catalogs and secure checkout flows.</p>
+            <button onclick="openModal('projects/vishKart.html')"
+              class="text-xs uppercase tracking-wider font-semibold text-brightPurple hover:text-white transition-colors">Learn
+              More &rarr;</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- About / Footer Section -->
+  <footer id="about" class="py-16 md:py-24 border-t border-lightIndigo relative z-10 bg-[#06050A]">
+    <div class="max-w-4xl mx-auto px-6 text-center gs-reveal">
+      <div class="mb-8 flex justify-center">
+        <div class="w-16 h-1 bg-neonPurple rounded"></div>
+      </div>
+      <h2 class="font-cursive text-5xl font-bold tracking-wider text-white mb-6">
+        Vishal Aggarwal
+      </h2>
+      <p
+        class="text-gray-300 text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto px-6 py-8 rounded-2xl bg-lightIndigo/30 border border-lightIndigo/50 backdrop-blur-sm shadow-[0_0_30px_rgba(160,102,255,0.05)]">
+        "Aimed at solving real-world social challenges through cutting-edge engineering and design."
+      </p>
+
+      <div class="mt-12 flex justify-center gap-6">
+        <a href="https://www.linkedin.com/in/vishalaggarwal0305/" target="_blank"
+          class="w-12 h-12 rounded-full border border-lightIndigo flex items-center justify-center text-gray-400 hover:text-brightPurple hover:border-brightPurple transition-colors text-xl bg-[#0B0914]">
+          <i class="bx bxl-linkedin"></i>
+        </a>
+        <a href="mailto:aggarwalvishal0305@gmail.com"
+          class="w-12 h-12 rounded-full border border-lightIndigo flex items-center justify-center text-gray-400 hover:text-brightPurple hover:border-brightPurple transition-colors text-xl bg-[#0B0914]">
+          <i class="bx bx-envelope"></i>
+        </a>
+        <a href="https://github.com/Vishal-Aggarwal0305/" target="_blank"
+          class="w-12 h-12 rounded-full border border-lightIndigo flex items-center justify-center text-gray-400 hover:text-brightPurple hover:border-brightPurple transition-colors text-xl bg-[#0B0914]">
+          <i class="bx bxl-github"></i>
+        </a>
+      </div>
+
+      <!-- Visitor Counter -->
+      <div class="mt-12 flex flex-col items-center gap-3">
+        <p class="text-xs uppercase tracking-[0.3em] text-gray-500 font-medium">Total Visits</p>
+        <div class="flex items-center gap-3 px-8 py-4 rounded-2xl bg-lightIndigo/40 border border-neonPurple/20 backdrop-blur-sm shadow-[0_0_20px_rgba(123,59,255,0.1)]">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brightPurple opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-neonPurple"></span>
+          </span>
+          <span id="visitor-count" class="text-3xl font-bold tracking-widest text-white tabular-nums">000000</span>
+          <span class="text-brightPurple text-xs font-semibold uppercase tracking-widest">Views</span>
+        </div>
+        <p class="text-xs text-gray-600 tracking-wide">Live since 2025 · Powered by localStorage</p>
+      </div>
+
+      <!-- Copyright Section -->
+      <div class="mt-8 pt-8 border-t border-lightIndigo/30 opacity-60 text-sm tracking-wide">
+        <p>© 2025 Vishal Aggarwal. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Single Page Project Modal -->
+  <div id="project-modal">
+    <button class="modal-close" onclick="closeModal()">
+      <i class="bx bx-x"></i>
+    </button>
+    <iframe id="project-frame" src="" class="w-full h-full border-none" style="background-color: transparent;"></iframe>
+  </div>
+
+  <!-- External Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+  <script>
+    // ── Visitor Counter ──────────────────────────────────────────────
+    (function () {
+      const BASE = 2847; // professional starting base
+      const key  = 'va_portfolio_views';
+      let count  = parseInt(localStorage.getItem(key) || '0', 10);
+      count += 1;
+      localStorage.setItem(key, count);
+      const total = BASE + count;
+      const el = document.getElementById('visitor-count');
+      // Animated count-up
+      let start = 0;
+      const duration = 1800;
+      const step = total / (duration / 16);
+      const timer = setInterval(() => {
+        start += step;
+        if (start >= total) { start = total; clearInterval(timer); }
+        el.textContent = Math.floor(start).toString().padStart(6, '0');
+      }, 16);
+    })();
+
+    // Typed.js Implementation
+    new Typed('#typed-text', {
+      strings: ['Software Engineer', 'AI Developer'],
+      typeSpeed: 60,
+      backSpeed: 40,
+      loop: true,
+      showCursor: false
+    });
+
+    // GSAP Scroll Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('.gs-reveal').forEach(function (elem) {
+      gsap.fromTo(elem,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: elem,
+            start: "top 85%",
+            toggleActions: "play none none none"
+          }
+        }
+      );
+    });
+
+    // Modal Control Logic
+    const modal = document.getElementById('project-modal');
+    const iframe = document.getElementById('project-frame');
+
+    function openModal(url) {
+      iframe.src = url;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      // Fade in modal
+      gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+    }
+
+    function closeModal() {
+      gsap.to(modal, {
+        opacity: 0,
+        duration: 0.3,
+        onComplete: () => {
+          modal.classList.remove('active');
+          iframe.src = '';
+          document.body.style.overflow = 'auto';
+        }
+      });
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', function (event) {
+      if (event.key === "Escape") { closeModal(); }
+    });
+
+    // Celestial Canvas with Mouse Parallax
+    const canvas = document.getElementById('celeb-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    let stars = [];
+    let mouse = { x: 0, y: 0 };
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      initStars();
+    }
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < 200; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.5 + 0.5,
+          opacity: Math.random(),
+          speed: Math.random() * 0.01 + 0.005,
+          parallax: Math.random() * 20 + 5
+        });
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+      stars.forEach(s => {
+        s.opacity += s.speed;
+        if (s.opacity > 1 || s.opacity < 0) s.speed *= -1;
+
+        // Apply mouse parallax
+        const px = mouse.x / s.parallax;
+        const py = mouse.y / s.parallax;
+
+        ctx.beginPath();
+        ctx.arc(s.x + px, s.y + py, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('mousemove', e => {
+      mouse.x = (e.clientX - W / 2) * 0.5;
+      mouse.y = (e.clientY - H / 2) * 0.5;
+    });
+
+    window.addEventListener('resize', resize);
+    resize();
+    animate();
+  </script>
+</body>
+
+</html>
