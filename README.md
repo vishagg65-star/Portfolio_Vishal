@@ -13,6 +13,7 @@
 
 ---
 
+#### **⚡ Current Mission**
 ```js
 <Bio
   name      = { "Vishal Aggarwal" }
@@ -25,15 +26,19 @@
 
 <img align="right" alt="Coding" src="https://thumbs.gfycat.com/EvilNextDevilfish-small.gif" width="350" height="250" /><br>
 
+#### **💻 Development Status**
 ```c
-printf("Currently working on %s", "AI & Flutter Development | TCS");
+printf("Currently working on %s", "AI &  Development | TCS");
 ```
+#### **💡 Philosophy**
 ```c++
 cout << "Passionate " << "Learner" << endl;
 ```
+#### **🏗️ Architecture**
 ```python
 print(f"Building: {'Portfolio · AI Tools · Mobile Apps'}")
 ```
+#### **🚀 Deployment Status**
 ```js
 console.log(`Ready to Ship. Always. 🚀`);
 ```
@@ -66,12 +71,6 @@ console.log(`Ready to Ship. Always. 🚀`);
 
 ---
 
-## 📊 GitHub Stats
 
-[![GitHub Streak](https://streak-stats.demolab.com?user=Vishal-Aggarwal0305&theme=python-dark)](https://git.io/streak-stats)
-
-[![Vishal's GitHub Stats](https://github-readme-stats.vercel.app/api?username=Vishal-Aggarwal0305&show_icons=true&theme=radical)](https://github.com/Vishal-Aggarwal0305)
-
----
 
 ![footer](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=150&width=100%&section=footer&text=Have+a+Nice+Day&fontSize=30&fontColor=999999)
